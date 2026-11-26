@@ -53,6 +53,7 @@ export interface Presentation {
     plansLabel: string;
     planRows: { label: string; values: [string, string] }[];
     plansNote: string;
+    renewalNote: string;
     pricingLinkLabel: string;
     includedLabel: string;
     included: string;
@@ -211,6 +212,7 @@ const es: Presentation = {
       { label: "Pago mensual", values: ["{monthly}/mes", "{monthly}/mes"] },
     ],
     plansNote: "Se seleccionará un único plan, con facturación mensual o anual. La contratación se realiza directamente con WordPress.com, a nombre del cliente. Tarifas orientativas sin impuestos.",
+    renewalNote: "Los precios con pago anual corresponden al primer año. Según la web oficial, la renovación anual es de USD 9/mes en Premium y USD 28/mes en Business, sujeta a las condiciones vigentes de WordPress.com.",
     pricingLinkLabel: "Consultar precios oficiales",
     includedLabel: "Configuración incluida",
     included: "Configuración del sitio, instalación de las herramientas necesarias, conexión del dominio, certificado de seguridad, configuración de copias de seguridad según el plan y entrega de accesos.",
@@ -369,6 +371,7 @@ const en: Presentation = {
       { label: "Monthly billing", values: ["{monthly}/month", "{monthly}/month"] },
     ],
     plansNote: "A single plan will be chosen, billed monthly or annually. It is purchased directly from WordPress.com, in the client's name. Indicative prices, excluding taxes.",
+    renewalNote: "Annual prices apply to the first year. According to the official site, annual renewal is USD 9/month for Premium and USD 28/month for Business, subject to WordPress.com's current terms.",
     pricingLinkLabel: "See official prices",
     includedLabel: "Set-up included",
     included: "Site configuration, installation of the necessary tools, domain connection, security certificate, backup set-up according to the plan and handover of access.",

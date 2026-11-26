@@ -273,6 +273,7 @@ export function TechSection({ p, proposal, ui }: { p: Presentation; proposal: Pr
               {t.pricingLinkLabel}
             </External>
           </p>
+          <p className="type-caption muted">{t.renewalNote}</p>
         </div>
         <div className="exec-split2">
           <div className="exec-box exec-box--icon exec-box--mine">
