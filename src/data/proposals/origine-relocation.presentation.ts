@@ -5,7 +5,7 @@ import type { PlanId } from "@/types/proposal";
  * Contenido de la presentación ejecutiva de Origine Relocation (ES / EN).
  * Redactado para personas sin conocimientos técnicos. La primera persona se reserva para
  * la sección de experiencia y colaboración. Importes, pagos y días de soporte se insertan
- * desde los datos aprobados ({0}, {annual}, {monthly}); no se repiten aquí.
+ * desde los datos aprobados (origine-relocation.ts) mediante {0}, {annual} y {monthly}; no se repiten aquí.
  */
 
 export interface Item {
@@ -23,6 +23,7 @@ export interface Presentation {
     cornerLabel: string;
     cornerText: string;
     rows: { label: string; values: Record<PlanId, string> }[];
+    durationLabel: string;
     summaries: Record<PlanId, string>;
     notes: Item[];
     deliverablesLabel: string;
@@ -36,10 +37,8 @@ export interface Presentation {
     label: string;
     steps: Item[];
     timelineLabel: string;
-    timelineLegend: [string, string];
+    stageLabels: [string, string];
     weekShort: string;
-    weekLabel: string;
-    timeline: Record<PlanId, { design: [number, number]; build: [number, number] }>;
     timelineNote: string;
     supportLabel: string;
     support: Item[];
@@ -78,20 +77,12 @@ export interface Presentation {
     approach: string;
     teamwork: string;
     years: { label: string; value: string; text: string };
-    sector: { label: string };
-    execution: { label: string; value: string; text: string };
+    sector: { label: string; text: string };
     collabLabel: string;
     collab: string;
     portfolioLabel: string;
   };
 }
-
-/** Duraciones acordadas (en semanas): definición y diseño / desarrollo y entrega. */
-const TIMELINE: Presentation["method"]["timeline"] = {
-  basica: { design: [1, 1], build: [2, 2] },
-  intermedia: { design: [1, 2], build: [2, 4] },
-  integral: { design: [1, 2], build: [2, 5] },
-};
 
 const es: Presentation = {
   eyebrow: "Aparicio Brand / Origine Relocation · Suiza",
@@ -126,7 +117,7 @@ const es: Presentation = {
     cornerText: "Funcionalidades y plazos de cada alternativa.",
     summaries: {
       basica: "Primera versión del sitio para presentar los servicios, publicar propiedades y recibir consultas.",
-      intermedia: "Más secciones, búsqueda de propiedades más simple y consultas sobre una propiedad específica.",
+      intermedia: "Sitio con varias secciones, más filtros de búsqueda y consultas asociadas a cada propiedad.",
       integral: "Sitio bilingüe, búsqueda avanzada, solicitudes de visita y conexión con la gestión de clientes.",
     },
     rows: [
@@ -140,14 +131,14 @@ const es: Presentation = {
       { label: "Filtros por precio y tipo de propiedad", values: { basica: "—", intermedia: "Incluidos", integral: "Incluidos" } },
       { label: "Filtros por habitaciones y superficie", values: { basica: "—", intermedia: "—", integral: "Incluidos" } },
       { label: "Orden de propiedades por precio o fecha", values: { basica: "—", intermedia: "Incluido", integral: "Incluido" } },
-      { label: "Búsqueda en un mapa interactivo", values: { basica: "—", intermedia: "—", integral: "Incluida" } },
+      { label: "Búsqueda en un mapa interactivo", values: { basica: "—", intermedia: "—", integral: "Incluida, sujeta a compatibilidad" } },
       { label: "Formulario de contacto", values: { basica: "General", intermedia: "Por propiedad", integral: "Por propiedad" } },
       { label: "Solicitudes de visita", values: { basica: "—", intermedia: "—", integral: "Incluidas" } },
       { label: "Páginas adicionales para campañas publicitarias", values: { basica: "—", intermedia: "—", integral: "Hasta 2" } },
       { label: "Conexión con un sistema de gestión de clientes (CRM) existente", values: { basica: "—", intermedia: "—", integral: "1 sistema compatible" } },
       { label: "Configuración inicial para buscadores y medición", values: { basica: "Incluida", intermedia: "Incluida", integral: "Incluida" } },
-      { label: "Plazo estimado", values: { basica: "2 semanas", intermedia: "3–4 semanas", integral: "4–5 semanas" } },
     ],
+    durationLabel: "Plazo estimado",
     notes: [
       { title: "Detalle de la estructura", text: "Básica: una página principal que presenta los servicios y el equipo, junto con el catálogo, las páginas individuales de las propiedades, el contacto y las páginas legales. Intermedia e Integral: inicio, servicios, catálogo, páginas individuales de las propiedades, sobre Origine, contacto y páginas legales. Las tres propuestas incluyen las páginas de privacidad, cookies y aviso legal, con textos facilitados por el cliente." },
       { title: "Sobre la carga inicial", text: "La cantidad indicada corresponde a las propiedades incluidas en la carga inicial. Posteriormente, el equipo de Origine podrá añadir, editar y retirar propiedades de forma autónoma." },
@@ -170,7 +161,7 @@ const es: Presentation = {
       tools: "Herramientas incluidas: Google Analytics 4, Google Tag Manager, seguimiento de conversiones de Google Ads y Meta Pixel, sujetas a los requisitos de privacidad y consentimiento correspondientes.",
       scope: "Se incluye la configuración de estas herramientas; la creación y gestión de campañas publicitarias no forma parte de la propuesta.",
     },
-    listing: { title: "Fichas de propiedades", text: "Fotografías, descripción, precio, moneda, gastos, ubicación, superficie, habitaciones y disponibilidad." },
+    listing: { title: "Fichas de propiedades", text: "Fotografías, descripción, precio, moneda, gastos, ciudad, cantón, ubicación, superficie, habitaciones y disponibilidad. El precio y los gastos se muestran antes del formulario de contacto." },
     forms: { title: "Formularios de contacto", text: "Datos de contacto, presupuesto mensual, tipo de consulta y fecha prevista de mudanza, con aviso de privacidad, consentimiento, protección contra spam y confirmación de envío." },
   },
   method: {
@@ -181,17 +172,15 @@ const es: Presentation = {
       { title: "Desarrollo web", text: "Implementación del sitio en WordPress.com y configuración de las funcionalidades acordadas." },
       { title: "Pruebas y publicación", text: "Pruebas de funcionamiento, adaptación a dispositivos, rendimiento y accesibilidad básica. Ajustes finales, publicación y entrega de accesos y documentación." },
     ],
-    timelineLabel: "Cronograma estimado por propuesta",
-    timelineLegend: ["Definición y diseño", "Desarrollo y entrega"],
+    timelineLabel: "Cronogramas estimados",
+    stageLabels: ["Definición y diseño", "Desarrollo, pruebas y entrega"],
     weekShort: "S{0}",
-    weekLabel: "Semana {0}",
-    timeline: TIMELINE,
-    timelineNote: "Plazos estimados. Dependen de la disponibilidad de los materiales, de las validaciones y de la fecha de inicio acordada.",
+    timelineNote: "Los plazos comenzarán una vez aprobado el alcance, recibido el anticipo y disponibles los materiales necesarios, y dependerán de las validaciones durante el proyecto. Las etapas pueden solaparse parcialmente, según las validaciones y la organización del trabajo.",
     supportLabel: "Revisiones y acompañamiento",
     support: [
       { title: "Revisiones incluidas", text: "El diseño y el sitio web se revisarán en conjunto antes del desarrollo y de la publicación, respectivamente. Se realizarán los ajustes necesarios dentro del alcance acordado." },
       { title: "{0} días de soporte", text: "Todas las propuestas incluyen {0} días de soporte desde la publicación para resolver consultas, corregir errores y realizar pequeños ajustes visuales o de contenido." },
-      { title: "Continuidad del proyecto", text: "Una vez finalizado el soporte incluido, se podrán coordinar nuevas mejoras y actualizaciones según las necesidades del proyecto." },
+      { title: "Acompañamiento posterior", text: "Opcional. Una vez finalizado el soporte incluido, el acompañamiento se coordinará según las necesidades del proyecto." },
     ],
   },
   tech: {
@@ -229,7 +218,7 @@ const es: Presentation = {
     paymentNote: "Los porcentajes se aplican al importe de la propuesta seleccionada.",
     maintenanceLabel: "Mantenimiento opcional",
     maintenanceText: [
-      "Por intervención puntual. Una vez finalizados los {0} días de soporte incluido, se podrán coordinar actualizaciones, mejoras o tareas de mantenimiento según las necesidades del proyecto.",
+      "Por intervención puntual, una vez finalizados los {0} días de soporte incluido. No es un pago obligatorio ni una suscripción mensual.",
       "Las intervenciones de mayor alcance se cotizarán por separado.",
     ],
     extraLabel: "Materiales y servicios adicionales",
@@ -241,11 +230,10 @@ const es: Presentation = {
   },
   value: {
     title: "Mi experiencia y forma de trabajar",
-    approach: "Mi experiencia en diseño de productos digitales y en el sector inmobiliario me permite abordar el proyecto desde la organización de la información hasta el diseño, desarrollo y publicación del sitio web.",
-    teamwork: "Me gusta trabajar en equipo, establecer prioridades y encontrar soluciones que se adapten a las necesidades de cada proyecto.",
+    approach: "Acompaño cada proyecto desde la organización de la información hasta el diseño, el desarrollo y la publicación del sitio web.",
+    teamwork: "Me gusta trabajar en equipo, establecer prioridades en conjunto y encontrar soluciones que se adapten a las necesidades de cada proyecto.",
     years: { label: "Experiencia", value: "+5 años", text: "En diseño de productos digitales." },
-    sector: { label: "Sector inmobiliario" },
-    execution: { label: "Especialidad", value: "UX/UI + Web", text: "Diseño UX/UI y desarrollo web." },
+    sector: { label: "Sector inmobiliario", text: "Experiencia en portales inmobiliarios." },
     collabLabel: "Colaboración con Aparicio Brand",
     collab: "Me interesa establecer una relación de colaboración a largo plazo con Aparicio Brand, aportando mi experiencia en diseño y desarrollo web tanto para este proyecto como para futuras iniciativas.",
     portfolioLabel: "Portfolio",
@@ -285,7 +273,7 @@ const en: Presentation = {
     cornerText: "Features and timeline for each option.",
     summaries: {
       basica: "A first version of the site to present the services, publish properties and receive enquiries.",
-      intermedia: "More sections, easier property search and enquiries about a specific property.",
+      intermedia: "Multi-section site, more search filters and enquiries linked to each property.",
       integral: "Bilingual site, advanced search, viewing requests and a connection to customer management.",
     },
     rows: [
@@ -299,14 +287,14 @@ const en: Presentation = {
       { label: "Filters by price and property type", values: { basica: "—", intermedia: "Included", integral: "Included" } },
       { label: "Filters by rooms and floor area", values: { basica: "—", intermedia: "—", integral: "Included" } },
       { label: "Sort properties by price or date", values: { basica: "—", intermedia: "Included", integral: "Included" } },
-      { label: "Search on an interactive map", values: { basica: "—", intermedia: "—", integral: "Included" } },
+      { label: "Search on an interactive map", values: { basica: "—", intermedia: "—", integral: "Included, subject to compatibility" } },
       { label: "Contact form", values: { basica: "General", intermedia: "Per property", integral: "Per property" } },
       { label: "Viewing requests", values: { basica: "—", intermedia: "—", integral: "Included" } },
       { label: "Additional landing pages for ad campaigns", values: { basica: "—", intermedia: "—", integral: "Up to 2" } },
       { label: "Connection to an existing customer management system (CRM)", values: { basica: "—", intermedia: "—", integral: "1 compatible system" } },
       { label: "Initial search engine and tracking set-up", values: { basica: "Included", intermedia: "Included", integral: "Included" } },
-      { label: "Estimated timeline", values: { basica: "2 weeks", intermedia: "3–4 weeks", integral: "4–5 weeks" } },
     ],
+    durationLabel: "Estimated timeline",
     notes: [
       { title: "Structure in detail", text: "Basic: a home page presenting the services and the team, plus the catalogue, individual property pages, contact and legal pages. Intermediate and Comprehensive: home, services, catalogue, individual property pages, about Origine, contact and legal pages. All three proposals include privacy, cookie and legal notice pages, with texts provided by the client." },
       { title: "About the initial upload", text: "The number shown refers to the properties included in the initial upload. After that, the Origine team will be able to add, edit and remove properties on its own." },
@@ -329,7 +317,7 @@ const en: Presentation = {
       tools: "Tools included: Google Analytics 4, Google Tag Manager, Google Ads conversion tracking and Meta Pixel, subject to the applicable privacy and consent requirements.",
       scope: "The set-up of these tools is included; creating and managing advertising campaigns is not part of the proposal.",
     },
-    listing: { title: "Property listings", text: "Photos, description, price, currency, charges, location, floor area, rooms and availability." },
+    listing: { title: "Property listings", text: "Photos, description, price, currency, charges, city, canton, location, floor area, rooms and availability. Price and charges are shown before the contact form." },
     forms: { title: "Contact forms", text: "Contact details, monthly budget, enquiry type and expected move-in date, with a privacy notice, consent, spam protection and a submission confirmation." },
   },
   method: {
@@ -340,17 +328,15 @@ const en: Presentation = {
       { title: "Web development", text: "The site is built on WordPress.com and the agreed features are set up." },
       { title: "Testing and launch", text: "Testing of functionality, device adaptation, performance and basic accessibility. Final adjustments, launch and handover of access and documentation." },
     ],
-    timelineLabel: "Estimated timeline by proposal",
-    timelineLegend: ["Definition and design", "Development and delivery"],
+    timelineLabel: "Estimated timelines",
+    stageLabels: ["Definition and design", "Development, testing and delivery"],
     weekShort: "W{0}",
-    weekLabel: "Week {0}",
-    timeline: TIMELINE,
-    timelineNote: "Estimated timelines. They depend on the availability of materials, approvals and the agreed start date.",
+    timelineNote: "Timelines start once the scope has been approved, the advance payment received and the necessary materials are available, and they depend on approvals during the project. Stages may partly overlap, depending on approvals and how the work is organised.",
     supportLabel: "Reviews and support",
     support: [
       { title: "Included reviews", text: "The design and the website will be reviewed together before development and before launch, respectively, with the necessary adjustments made within the agreed scope." },
       { title: "{0} days of support", text: "All proposals include {0} days of support from launch to answer questions, fix errors and make small visual or content adjustments." },
-      { title: "Ongoing collaboration", text: "Once the included support period ends, further improvements and updates can be arranged as the project needs them." },
+      { title: "Ongoing support", text: "Optional. Once the included support period ends, further support will be arranged as the project needs it." },
     ],
   },
   tech: {
@@ -388,7 +374,7 @@ const en: Presentation = {
     paymentNote: "The percentages apply to the price of the selected proposal.",
     maintenanceLabel: "Optional maintenance",
     maintenanceText: [
-      "Per one-off intervention. Once the {0} days of included support have ended, updates, improvements or maintenance tasks can be arranged as the project needs them.",
+      "Per one-off intervention, once the {0} days of included support have ended. It is neither a mandatory payment nor a monthly subscription.",
       "Larger pieces of work will be quoted separately.",
     ],
     extraLabel: "Materials and additional services",
@@ -400,11 +386,10 @@ const en: Presentation = {
   },
   value: {
     title: "My experience and way of working",
-    approach: "My background in digital product design and in the real-estate sector allows me to take the project from organising the information through to designing, building and launching the website.",
+    approach: "I take each project from organising the information through to designing, building and launching the website.",
     teamwork: "I enjoy working as part of a team, setting priorities together and finding solutions that fit the needs of each project.",
     years: { label: "Experience", value: "5+ years", text: "In digital product design." },
-    sector: { label: "Real-estate sector" },
-    execution: { label: "Expertise", value: "UX/UI + Web", text: "UX/UI design and web development." },
+    sector: { label: "Real-estate sector", text: "Experience with real-estate portals." },
     collabLabel: "Working with Aparicio Brand",
     collab: "I would like to build a long-term working relationship with Aparicio Brand, bringing my web design and development experience to this project and to future initiatives.",
     portfolioLabel: "Portfolio",

@@ -5,7 +5,7 @@ import type { Ui } from "@/i18n/ui";
 
 /**
  * Selector compacto ES / EN. Son enlaces reales (funcionan con teclado y sin JavaScript);
- * conservan la sección actual (hash) y guardan la preferencia. La propuesta elegida se conserva en sessionStorage.
+ * conservan la sección actual (hash) y guardan la preferencia.
  */
 export function LanguageSwitch({ locale, slug, ui }: { locale: Locale; slug: string; ui: Ui }) {
   const other = altLocale(locale);

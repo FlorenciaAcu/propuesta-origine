@@ -20,7 +20,7 @@ export function proposalMetadata(slug: string, locale: Locale): Metadata {
       ? "Propuesta de Florencia Acuña para Origine Relocation: alternativas Básica, Intermedia e Integral."
       : "Proposal by Florencia Acuña for Origine Relocation: Basic, Intermediate and Comprehensive alternatives.";
   return {
-    title: entry.proposal.title,
+    title: entry.proposal.title[locale],
     description,
     // La propuesta contiene información comercial de un cliente: no se indexa ni se comparte con metadatos públicos.
     robots: { index: false, follow: false, nocache: true, googleBot: { index: false, follow: false } },

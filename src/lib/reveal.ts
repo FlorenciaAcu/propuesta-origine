@@ -1,6 +1,6 @@
 /** Elementos que aparecen al entrar en pantalla. */
 export const REVEAL_SELECTOR =
-  ".exec-sheet, .exec-sheet .exec-box, .exec-steps > li, .exec-numbered > li, .exec-goals > li, .exec-journey__list > li, .exec-support > li, .exec-money__card, .exec-platform, .exec-cols > div, .exec-cards > .exec-box, .exec .table-wrap, .exec-note";
+  ".exec-sheet, .exec-sheet .exec-box, .exec-steps > li, .exec-goals > li, .exec-journey__list > li, .exec-support > li, .exec-platform, .exec-cards > .exec-box, .exec .table-wrap";
 
 /**
  * Script en <head>: activa las animaciones de entrada sin esperar a que React cargue.

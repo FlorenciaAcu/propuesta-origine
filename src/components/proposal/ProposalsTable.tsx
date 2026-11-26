@@ -1,5 +1,5 @@
 import { ChartColumn, Check, ClipboardList, Home, Info } from "lucide-react";
-import { formatUsd } from "@/i18n/config";
+import { durationText, formatUsd } from "@/i18n/config";
 import type { Ui } from "@/i18n/ui";
 import type { Presentation } from "@/data/proposals/origine-relocation.presentation";
 import type { Proposal } from "@/types/proposal";
@@ -30,7 +30,7 @@ export function ProposalsTable({ p, proposal, ui }: { p: Presentation; proposal:
                 </th>
                 {plans.map((plan) => (
                   <th key={plan.id} scope="col" className="exec-table__plan">
-                    <span className="exec-table__name">{plan.name}</span>
+                    <span className="exec-table__name">{plan.name[L]}</span>
                     <span className="exec-table__price">{formatUsd(plan.price, L)}</span>
                     <span className="exec-table__summary">{t.summaries[plan.id]}</span>
                   </th>
@@ -55,7 +55,7 @@ export function ProposalsTable({ p, proposal, ui }: { p: Presentation; proposal:
                         ) : v === "—" ? (
                           <>
                             <span aria-hidden="true">—</span>
-                            <span className="sr-only">{ui.compare.notIncluded}</span>
+                            <span className="sr-only">{ui.notIncluded}</span>
                           </>
                         ) : (
                           v
@@ -65,6 +65,12 @@ export function ProposalsTable({ p, proposal, ui }: { p: Presentation; proposal:
                   })}
                 </tr>
               ))}
+              <tr>
+                <th scope="row">{t.durationLabel}</th>
+                {plans.map((plan) => (
+                  <td key={plan.id}>{durationText(plan.weeks, L)}</td>
+                ))}
+              </tr>
             </tbody>
           </table>
         </div>

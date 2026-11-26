@@ -29,7 +29,7 @@ const GOAL_ICONS: LucideIcon[] = [BadgeCheck, LayoutGrid, MapPin, CalendarCheck,
 const STEP_ICONS: LucideIcon[] = [Search, PenTool, CodeXml, Rocket];
 const SUPPORT_ICONS: LucideIcon[] = [MessagesSquare, Headphones, RefreshCw];
 const JOURNEY_ICONS: LucideIcon[] = [Globe, Images, Send, Handshake];
-import { fmt, formatUsd, weeksLabel } from "@/i18n/config";
+import { durationText, fmt, formatPercent, formatUsd, weeksLabel } from "@/i18n/config";
 import type { Ui } from "@/i18n/ui";
 import type { Presentation } from "@/data/proposals/origine-relocation.presentation";
 import type { Proposal } from "@/types/proposal";
@@ -56,7 +56,7 @@ function External({ href, children, ui, className }: { href: string; children: R
   );
 }
 
-/** 00 · Objetivos del proyecto. */
+/** Contexto y objetivos del proyecto. */
 export function ObjectivesSection({ p }: { p: Presentation }) {
   const o = p.objectives;
   return (
@@ -113,8 +113,6 @@ export function MethodSection({ p, proposal, ui }: { p: Presentation; proposal: 
   const m = p.method;
   const L = ui.locale;
   const supportDays = proposal.plans[0].supportDays;
-  const weeks = Math.max(...Object.values(m.timeline).map((t) => t.build[1]));
-  const cols = Array.from({ length: weeks }, (_, i) => i + 1);
   return (
     <section id="metodologia" className="section exec" aria-labelledby="t-metodologia">
       <div className="container exec-sheet">
@@ -135,44 +133,45 @@ export function MethodSection({ p, proposal, ui }: { p: Presentation; proposal: 
         </div>
         <div className="exec-block">
           <h3 className="exec-label">{m.timelineLabel}</h3>
-          <div className="exec-gantt" style={{ ["--weeks" as string]: weeks } as React.CSSProperties}>
-            <div className="exec-gantt__row exec-gantt__head" aria-hidden="true">
-              <span />
-              <div className="exec-gantt__track">
-                {cols.map((w) => (
-                  <span key={w} className="exec-gantt__week">
-                    {fmt(m.weekShort, w)}
-                  </span>
-                ))}
-              </div>
-            </div>
-            <ul className="exec-gantt__rows">
-              {proposal.plans.map((plan) => {
-                const t = m.timeline[plan.id];
-                return (
-                  <li key={plan.id} className="exec-gantt__row">
-                    <span className="exec-gantt__name">{plan.name}</span>
-                    <div className="exec-gantt__track">
-                      <span className="exec-gantt__bar exec-gantt__bar--design" style={{ gridColumn: `${t.design[0]} / ${t.design[1] + 1}` }}>
-                        <span className="sr-only">
-                          {m.timelineLegend[0]}: {weeksLabel(t.design[0], t.design[1], L)}.
+          <ul className="exec-timelines">
+            {proposal.plans.map((plan) => {
+              const t = plan.timeline;
+              const weeks = plan.weeks[1];
+              const stages: { label: string; range: [number, number]; kind: "design" | "build" }[] = [
+                { label: m.stageLabels[0], range: t.design, kind: "design" },
+                { label: m.stageLabels[1], range: t.build, kind: "build" },
+              ];
+              return (
+                <li key={plan.id} className="exec-timeline" style={{ ["--weeks" as string]: weeks } as React.CSSProperties}>
+                  <h4 className="exec-timeline__title">
+                    {plan.name[L]}
+                    <span className="exec-timeline__duration">{durationText(plan.weeks, L)}</span>
+                  </h4>
+                  <div className="exec-timeline__scale" aria-hidden="true">
+                    {Array.from({ length: weeks }, (_, i) => (
+                      <span key={i}>{fmt(m.weekShort, i + 1)}</span>
+                    ))}
+                  </div>
+                  <ol className="exec-timeline__stages">
+                    {stages.map((st) => (
+                      <li key={st.kind}>
+                        <p className="exec-timeline__stage">
+                          <span>{st.label}</span>
+                          <span className="exec-timeline__weeks">{weeksLabel(st.range[0], st.range[1], L)}</span>
+                        </p>
+                        <span className="exec-timeline__track" aria-hidden="true">
+                          <span
+                            className={`exec-timeline__bar exec-timeline__bar--${st.kind}`}
+                            style={{ gridColumn: `${st.range[0]} / ${st.range[1] + 1}` }}
+                          />
                         </span>
-                      </span>
-                      <span className="exec-gantt__bar exec-gantt__bar--build" style={{ gridColumn: `${t.build[0]} / ${t.build[1] + 1}` }}>
-                        <span className="sr-only">
-                          {m.timelineLegend[1]}: {weeksLabel(t.build[0], t.build[1], L)}.
-                        </span>
-                      </span>
-                    </div>
-                  </li>
-                );
-              })}
-            </ul>
-            <p className="exec-gantt__legend" aria-hidden="true">
-              <span><i className="exec-gantt__dot exec-gantt__dot--design" /> {m.timelineLegend[0]}</span>
-              <span><i className="exec-gantt__dot exec-gantt__dot--build" /> {m.timelineLegend[1]}</span>
-            </p>
-          </div>
+                      </li>
+                    ))}
+                  </ol>
+                </li>
+              );
+            })}
+          </ul>
           <p className="type-caption muted exec-start">{m.timelineNote}</p>
         </div>
         <div className="exec-block">
@@ -213,10 +212,10 @@ function WordPressMark() {
 export function TechSection({ p, proposal, ui }: { p: Presentation; proposal: Proposal; ui: Ui }) {
   const L = ui.locale;
   const t = p.tech;
-  const wp = proposal.wordpress.plans;
+  const wp = proposal.wordpress;
   const cell = (v: string, i: number) => {
     const w = wp[i];
-    return w ? v.replace("{annual}", formatUsd(w.annual, L)).replace("{monthly}", formatUsd(w.monthlyBilling, L)) : v;
+    return w ? v.replace("{annual}", formatUsd(w.annual, L)).replace("{monthly}", formatUsd(w.monthly, L)) : v;
   };
   return (
     <section id="tecnologia" className="section exec" aria-labelledby="t-tecnologia">
@@ -296,12 +295,12 @@ export function TechSection({ p, proposal, ui }: { p: Presentation; proposal: Pr
   );
 }
 
-/** Condiciones comerciales: pago de honorarios, mantenimiento opcional y consideraciones. */
+/** Condiciones comerciales: forma de pago, mantenimiento opcional, materiales y servicios adicionales. */
 export function TermsSection({ p, proposal, ui }: { p: Presentation; proposal: Proposal; ui: Ui }) {
   const L = ui.locale;
   const t = p.terms;
   const [adv, bal] = proposal.plans[0].payments;
-  const pct = (n: number) => (L === "es" ? `${n} %` : `${n}%`);
+  const pct = (n: number) => formatPercent(n, L);
   return (
     <section id="condiciones" className="section exec" aria-labelledby="t-condiciones">
       <div className="container exec-sheet">
@@ -366,7 +365,7 @@ export function TermsSection({ p, proposal, ui }: { p: Presentation; proposal: P
   );
 }
 
-/** 03 · Mi enfoque y valor agregado. */
+/** Experiencia profesional y colaboración con Aparicio Brand. */
 export function ValueSection({ p, proposal, ui }: { p: Presentation; proposal: Proposal; ui: Ui }) {
   const v = p.value;
   const portfolio = proposal.contact.portfolio;
@@ -381,15 +380,15 @@ export function ValueSection({ p, proposal, ui }: { p: Presentation; proposal: P
         <div className="exec-block">
           <div className="exec-cards">
             <div className="exec-box">
-              <p className="exec-label">{v.years.label}</p>
+              <h3 className="exec-label">{v.years.label}</h3>
               <p className="exec-big">{v.years.value}</p>
               <p className="type-body muted">{v.years.text}</p>
             </div>
             <div className="exec-box">
-              <p className="exec-label">{v.sector.label}</p>
+              <h3 className="exec-label">{v.sector.label}</h3>
               <ul className="exec-refs">
                 <li>
-                  <External href="https://www.infocasas.com.uy/" ui={ui} className="link-arrow exec-ref exec-ref--lg">
+                  <External href="https://www.infocasas.com.uy/" ui={ui} className="link-arrow exec-ref">
                     InfoCasas
                   </External>
                 </li>
@@ -399,11 +398,7 @@ export function ValueSection({ p, proposal, ui }: { p: Presentation; proposal: P
                   </External>
                 </li>
               </ul>
-            </div>
-            <div className="exec-box">
-              <p className="exec-label">{v.execution.label}</p>
-              <p className="exec-mid">{v.execution.value}</p>
-              <p className="type-body muted">{v.execution.text}</p>
+              <p className="type-body muted">{v.sector.text}</p>
             </div>
           </div>
         </div>
@@ -421,7 +416,7 @@ export function ValueSection({ p, proposal, ui }: { p: Presentation; proposal: P
   );
 }
 
-/** Cabecera: identidad y selector de idioma. */
+/** Identidad de la cabecera y del pie. */
 export function Brand({ p }: { p: Presentation }) {
   return (
     <span className="exec-brand">
