@@ -1,0 +1,241 @@
+/* Florencia UX — generated from tokens.json */
+:root, [data-theme="light"] {
+  --surface: #fafafa; /* Fondo de sección (--surface-page / --surface-dark). Las secciones oscuras son Hero, CTA de cierre, Footer y DetailHero, y llevan data-header-theme="dark". */
+  --surface-subtle: #f0f0f0; /* Fondo secundario (--surface-subtle): bloques internos y superficies apagadas. */
+  --surface-elevated: #ffffff; /* Superficies blancas sobre la página (--surface-elevated, --card): diálogos, la hoja de cuaderno. */
+  --ink: #111827; /* Texto principal y títulos (--text-primary = gray-900 / --text-inverse). */
+  --ink-secondary: #374151; /* Texto de lectura secundario (--text-secondary = gray-700; gray-300 sobre oscuro): párrafos de los detalles, texto de sticky notes. */
+  --ink-muted: #4b5563; /* Texto chico, metadata, intros de sección, labels de MetaList (--text-muted = gray-600). Es el mínimo para texto: nunca gray-400/500 sobre claro. */
+  --line: #e5e7eb; /* Hairlines y divisores (--border-subtle = gray-200): filas de proyectos, decisiones, MetaList. */
+  --line-strong: #8a8f98; /* Bordes de controles (inputs, toggle, botón secondary, OpenCue de artifacts): 3:1 sobre surface y surface-raised. */
+  --accent: #cc0058; /* Acento como TEXTO y foco: eyebrows, links, numeración, bullets, anillo de foco (--text-accent / --text-accent-inverse). 5.4:1 sobre claro y 5.2:1 sobre negro. #ff006e nunca va como texto sobre claro. */
+  --accent-fill: #cc0058; /* Relleno del botón primary y del OpenCue al pasar el mouse, en ambos fondos (bg-magenta-strong); texto on-accent encima (5.7:1). */
+  --accent-hover: #a80048; /* Hover del botón primary. */
+  --on-accent: #ffffff; /* Texto e íconos sobre accent-fill. */
+  --brand-magenta: #ff006e; /* El magenta neón de la marca (--brand-magenta): blobs, marco del hero, margen de la hoja de cuaderno. Como texto, solo sobre oscuro. */
+  --brand-cyan: #00b8d4; /* Cian (--brand-cyan-strong / --brand-cyan): detalles puntuales — manijas del marco sobre oscuro, el punto que recorre los conectores, el degradado. Nunca texto sobre claro (2.2:1). */
+  --glass: rgba(255,255,255,0.55); /* Fondo de .glass-panel y botón secondary (vidrio con blur 16px). */
+  --glass-border: rgba(255,255,255,0.7); /* Borde del vidrio. */
+  --note-yellow: #fff3a6; /* Sticky note 1 de "Cómo se conecta" (siempre en este orden: amarillo, rosa, celeste). Texto ink-secondary claro encima. */
+  --note-pink: #ffd6e3; /* Sticky note 2. */
+  --note-cyan: #d3f3fa; /* Sticky note 3. */
+  --note-ink: #374151; /* Texto sobre sticky notes y pestañas del índice, en ambos fondos (las notas son siempre claras). */
+  --flag-1: #c8f0e0; /* Pestaña 1 del índice "En esta página" (CaseOutline); se repiten en orden. */
+  --flag-2: #bfe0f2; /* Pestaña 2. */
+  --flag-3: #b4cdd3; /* Pestaña 3. */
+  --flag-4: #f2d3e6; /* Pestaña 4. */
+  --flag-5: #f3a5c0; /* Pestaña 5. */
+  --notebook-margin: rgba(255,0,110,0.3); /* Línea de margen rosa de la hoja de cuaderno (.bg-notebook). */
+  --notebook-rule: rgba(0,150,200,0.2); /* Renglones de la hoja de cuaderno, cada 1.65rem. */
+  --dot-grid: rgba(10,10,10,0.08); /* Puntos de .bg-dot-grid, cada 28px: fondo del canvas de SystemMap y secciones técnicas. */
+  --line-decor: #d1d5db; /* El gris-300 decorativo del portfolio: borde del OpenCue y del canvas del sitio, números de las filas de casos en reposo. 1.4:1, nunca como único indicador. */
+  --surface-raised: #ffffff; /* Cards, paneles, inputs y menús de los artifacts. */
+  --surface-sunken: #f0f0f0; /* Zonas hundidas: track de tabs, filas alternas, bloques de Steps grid, track de progress. En oscuro es un gris apenas más claro que la página para que se distinga. */
+  --line-inverse: rgba(255,255,255,0.3); /* Bordes y divisores dentro de superficies inverse (fondo ink). */
+  --accent-soft: #fdeaf2; /* Fondo tintado magenta: badge accent, callout de nota, celda en foco, bloque "En tu vida". Texto accent encima (4.9:1 / 4.7:1). */
+  --success: #047857; /* Estado ok/leído como texto o ícono, siempre con palabra. */
+  --success-soft: #e3f4ec; /* Fondo de badge y callout de éxito. */
+  --warning: #a15c07; /* Atención/pendiente como texto o ícono. */
+  --warning-soft: #fdf1dc; /* Fondo de badge y callout de atención. */
+  --danger: #b91c1c; /* Error y acciones destructivas. Rojo, distinto del magenta en luminosidad y tono; siempre con palabra. */
+  --danger-soft: #fde4e4; /* Fondo de badge y callout de error. */
+  --paper: #ffffff; /* Fondo de la hoja de cuaderno (Reflection paper), blanca en ambos temas, como una hoja real. */
+  --shadow-glass: 0 8px 32px rgba(10,10,10,0.06), inset 0 1px 0 rgba(255,255,255,0.6); /* Panel de vidrio (.glass-panel). */
+  --shadow-note: 0 2px 4px rgba(10,10,10,0.12); /* Sticky notes y pestaña activa del índice. */
+  --shadow-primary-hover: 0 4px 20px rgba(204,0,88,0.4); /* Resplandor del botón primary al pasar el mouse. */
+  --shadow-secondary: 0 2px 12px rgba(0,0,0,0.04); /* Botón secondary sobre claro. */
+  --shadow-card: 0 1px 2px rgba(10,10,10,0.04), 0 4px 16px rgba(10,10,10,0.04); /* Cards en reposo. */
+  --shadow-raised: 0 2px 4px rgba(10,10,10,0.06), 0 12px 32px rgba(10,10,10,0.08); /* Hover de cards interactivas, menús, toast. */
+}
+[data-theme="dark"] {
+  --surface: #0a0a0a;
+  --surface-subtle: #171717;
+  --surface-elevated: #141414;
+  --ink: #ffffff;
+  --ink-secondary: #d1d5db;
+  --ink-muted: #9ca3af;
+  --line: #262626;
+  --line-strong: #6b7280;
+  --accent: #ff006e;
+  --accent-fill: #cc0058;
+  --accent-hover: #a80048;
+  --on-accent: #ffffff;
+  --brand-magenta: #ff006e;
+  --brand-cyan: #00e5ff;
+  --glass: rgba(255,255,255,0.1);
+  --glass-border: rgba(255,255,255,0.25);
+  --note-yellow: #fff3a6;
+  --note-pink: #ffd6e3;
+  --note-cyan: #d3f3fa;
+  --note-ink: #374151;
+  --flag-1: #c8f0e0;
+  --flag-2: #bfe0f2;
+  --flag-3: #b4cdd3;
+  --flag-4: #f2d3e6;
+  --flag-5: #f3a5c0;
+  --notebook-margin: rgba(255,0,110,0.3);
+  --notebook-rule: rgba(0,150,200,0.2);
+  --dot-grid: rgba(255,255,255,0.08);
+  --line-decor: #404040;
+  --surface-raised: #1a1a1a;
+  --surface-sunken: #141414;
+  --line-inverse: rgba(10,10,10,0.35);
+  --accent-soft: #2a0a18;
+  --success: #34d399;
+  --success-soft: #0f2a20;
+  --warning: #fbbf24;
+  --warning-soft: #2a2008;
+  --danger: #f87171;
+  --danger-soft: #2c1010;
+  --paper: #ffffff;
+  --shadow-card: 0 1px 2px rgba(0,0,0,0.4);
+  --shadow-raised: 0 4px 24px rgba(0,0,0,0.6);
+}
+:root {
+  --space-1: 4px; /* Gaps mínimos (ícono–texto). */
+  --space-2: 8px; /* Gap de botones (gap-2), padding de pestañas. */
+  --space-3: 12px; /* Filas de MetaList (py-3). */
+  --space-4: 16px; /* Párrafos dentro de un bloque (space-y-4); gap de etapas. */
+  --space-5: 20px; /* Título → intro de sección (mb-5); padding de sticky notes; gap de filas. */
+  --space-6: 24px; /* Margen lateral del page-container (px-6). */
+  --space-8: 32px; /* Gap número–contenido en filas (sm:gap-8). */
+  --space-10: 40px; /* Filas de Decisiones (py-10). */
+  --space-12: 48px; /* Entre secciones de un artifact en desktop. */
+  --space-14: 56px; /* Intro → contenido de sección (mb-14). */
+  --space-16: 64px; /* Aire superior de la portada (Hero) en desktop. */
+  --space-20: 80px; /* Padding vertical de sección en mobile (--section-y); entre bloques de un detalle. */
+  --space-36: 144px; /* Padding vertical de sección desde lg (--section-y-lg). */
+  --content-wide: 80rem; /* page-container: el único eje horizontal del sitio (max-w-7xl). */
+  --content-reading: 48rem; /* Medida de lectura para intros (max-w-3xl). */
+  --content-narrow: 42rem; /* Textos cortos y diálogos (max-w-2xl). */
+  --radius-none: 0px; /* Canvas de SystemMap, marco de DetailHero, sticky notes: las formas de herramienta van rectas. */
+  --radius-media: 12px; /* Imágenes y capturas (rounded-xl). */
+  --radius-2xl: 16px; /* Área de foco de las filas de proyecto (rounded-2xl). */
+  --radius-card: 20px; /* Base de shadcn para cards y paneles (--radius). */
+  --radius-pill: 999px; /* Botones y OpenCue. */
+  --radius-sm: 6px; /* Badges, checkbox. */
+  --radius-md: 10px; /* Inputs, callouts, celdas. */
+  --radius-lg: 16px; /* Cards y paneles (rounded-2xl del portfolio). */
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: Manrope, ui-sans-serif, system-ui, sans-serif;
+  --text-type-display: 300 48px/1 var(--font-display); /* Título protagonista de una página. 48 → 80 (md) → 96px (lg). */
+  --text-type-h1: 300 40px/1.08 var(--font-display); /* Título de sección del home (Sobre mí, Cómo trabajo, Experiencia). 40 → 56 → 68px. */
+  --text-type-h2: 400 32px/1.15 var(--font-display); /* Bloques dentro de una sección o caso; nombre en las filas de proyecto. 32 → 40 → 44px. */
+  --text-type-h3: 400 22px/1.25 var(--font-display); /* Subbloques, preguntas de Decisiones, etapas de Cómo trabajo. 22 → 24 → 28px. */
+  --text-type-title-compact: 500 16px/1.65 var(--font-display); /* Título de ítem en una lista densa (empresas de Experiencia, sticky notes). */
+  --text-number: 300 48px/1 var(--font-display); /* Número decorativo de filas y etapas, dos dígitos, cifras tabulares: gray-300 en reposo y accent al pasar el mouse (filas), degradado de marca (Cómo trabajo). aria-hidden. */
+  --text-type-s1: 300 18px/1.6 var(--font-sans); /* Intro (lead) de una sección, en ink-muted. 18 → 20px (md). */
+  --text-type-body: 300 16px/1.65 var(--font-sans); /* Texto narrativo. Interlineado 1.65rem = el renglón de la hoja de cuaderno. */
+  --text-type-caption: 400 14px/1.55 var(--font-sans); /* Fechas, estados, metadata, taglines de fila. */
+  --text-type-eyebrow: 500 12px/1.4 var(--font-sans); /* Categoría o contexto que el título no contiene, en MAYÚSCULAS y accent. Nunca repite el título. */
+  --text-button: 500 14px/20px var(--font-sans); /* Texto de botón, siempre en infinitivo. */
+  --text-reading: 300 17px/28px var(--font-sans); /* Lectura larga dentro de Prose, medida máxima 65 caracteres. */
+  --text-prompt: 500 17px/28px var(--font-sans); /* La pregunta de un Reflection. */
+  --text-label: 500 13px/20px var(--font-sans); /* Labels, botones sm, tabs, chips. */
+  --text-ui: 400 15px/24px var(--font-sans); /* Texto de interfaz en artifacts (botones grandes, cards, celdas). */
+}
+.type-display {
+  font-family: var(--font-display);
+  font-size: 48px;
+  line-height: 1;
+  font-weight: 300;
+  letter-spacing: 0;
+}
+.type-h1 {
+  font-family: var(--font-display);
+  font-size: 40px;
+  line-height: 1.08;
+  font-weight: 300;
+  letter-spacing: 0;
+}
+.type-h2 {
+  font-family: var(--font-display);
+  font-size: 32px;
+  line-height: 1.15;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.type-h3 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  line-height: 1.25;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.type-title-compact {
+  font-family: var(--font-display);
+  font-size: 16px;
+  line-height: 1.65;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+.number {
+  font-family: var(--font-display);
+  font-size: 48px;
+  line-height: 1;
+  font-weight: 300;
+  letter-spacing: 0;
+}
+.type-s1 {
+  font-family: var(--font-sans);
+  font-size: 18px;
+  line-height: 1.6;
+  font-weight: 300;
+  letter-spacing: 0;
+}
+.type-body {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.65;
+  font-weight: 300;
+  letter-spacing: 0;
+}
+.type-caption {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.55;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.type-eyebrow {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  line-height: 1.4;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+.button {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+.reading {
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 28px;
+  font-weight: 300;
+  letter-spacing: 0;
+}
+.prompt {
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 28px;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+.label {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+.ui {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 24px;
+  font-weight: 400;
+  letter-spacing: 0;
+}

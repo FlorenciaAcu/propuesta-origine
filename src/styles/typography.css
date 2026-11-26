@@ -1,0 +1,32 @@
+/* Escala tipográfica de Florencia UX, con los cambios responsive documentados en tokens.json. */
+:root {
+  --font-display: var(--font-sg), "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-mr), Manrope, ui-sans-serif, system-ui, sans-serif;
+}
+
+.type-display { font-family: var(--font-display); font-size: 48px; line-height: 1; font-weight: 300; margin: 0; }
+.type-h1 { font-family: var(--font-display); font-size: 40px; line-height: 1.08; font-weight: 300; margin: 0; }
+.type-h2 { font-family: var(--font-display); font-size: 32px; line-height: 1.15; font-weight: 400; margin: 0; }
+.type-h3 { font-family: var(--font-display); font-size: 22px; line-height: 1.25; font-weight: 400; margin: 0; }
+.type-title-compact { font-family: var(--font-display); font-size: 16px; line-height: 1.65; font-weight: 500; margin: 0; }
+.type-s1 { font-family: var(--font-sans); font-size: 18px; line-height: 1.6; font-weight: 300; margin: 0; }
+.type-body { font-family: var(--font-sans); font-size: 16px; line-height: 1.65; font-weight: 300; margin: 0; }
+.type-caption { font-family: var(--font-sans); font-size: 14px; line-height: 1.55; font-weight: 400; margin: 0; }
+.type-eyebrow { font-family: var(--font-sans); font-size: 12px; line-height: 1.4; font-weight: 500; margin: 0; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent); }
+.type-label { font-family: var(--font-sans); font-size: 13px; line-height: 20px; font-weight: 500; }
+.type-ui { font-family: var(--font-sans); font-size: 15px; line-height: 24px; font-weight: 400; }
+.number { font-family: var(--font-display); font-weight: 300; font-variant-numeric: tabular-nums; line-height: 1; }
+
+@media (min-width: 48rem) {
+  .type-display { font-size: 80px; }
+  .type-h1 { font-size: 56px; }
+  .type-h2 { font-size: 40px; }
+  .type-h3 { font-size: 24px; }
+  .type-s1 { font-size: 20px; }
+}
+@media (min-width: 64rem) {
+  .type-display { font-size: 96px; }
+  .type-h1 { font-size: 68px; }
+  .type-h2 { font-size: 44px; }
+  .type-h3 { font-size: 28px; }
+}
