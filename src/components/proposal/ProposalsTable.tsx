@@ -109,6 +109,7 @@ export function ProposalsTable({ p, proposal, ui }: { p: Presentation; proposal:
               <p className="exec-strong">{t.measurement.title}</p>
               <p className="type-body muted">{t.measurement.text}</p>
               <p className="type-caption muted">{t.measurement.tools}</p>
+              <p className="type-caption muted">{t.measurement.scope}</p>
             </div>
           </div>
           <div className="exec-common__brief">

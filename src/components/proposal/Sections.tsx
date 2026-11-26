@@ -310,6 +310,7 @@ export function TermsSection({ p, proposal, ui }: { p: Presentation; proposal: P
             <span className="exec-icon" aria-hidden="true">
               <Wallet size={20} strokeWidth={1.75} />
             </span>
+            <p className="exec-tag exec-tag--required">{t.requiredTag}</p>
             <h3 className="exec-label">{t.paymentLabel}</h3>
             <div className="exec-pay" role="img" aria-label={`${pct(adv.percent)} ${t.paymentSteps[0]}, ${pct(bal.percent)} ${t.paymentSteps[1]}`}>
               <div className="exec-pay__bar" aria-hidden="true">
@@ -333,15 +334,23 @@ export function TermsSection({ p, proposal, ui }: { p: Presentation; proposal: P
             <span className="exec-icon exec-icon--dark" aria-hidden="true">
               <Wrench size={20} strokeWidth={1.75} />
             </span>
+            <p className="exec-tag">{t.optionalTag}</p>
             <h3 className="exec-label exec-label--ink">{t.maintenanceLabel}</h3>
             <p className="exec-big">
               USD {proposal.maintenance.minUsd}–{proposal.maintenance.maxUsd}
             </p>
-            <p className="type-caption muted">{fmt(t.maintenanceText, proposal.plans[0].supportDays)}</p>
+            {t.maintenanceText.map((x) => (
+              <p key={x} className="type-caption muted">
+                {fmt(x, proposal.plans[0].supportDays)}
+              </p>
+            ))}
           </div>
         </div>
         <div className="exec-block">
-          <h3 className="exec-label">{t.extraLabel}</h3>
+          <div className="exec-label-row">
+            <h3 className="exec-label">{t.extraLabel}</h3>
+            <span className="exec-tag">{t.asNeededTag}</span>
+          </div>
           <ul className="exec-notes">
             {t.extras.map((x) => (
               <li key={x}>
@@ -365,8 +374,7 @@ export function ValueSection({ p, proposal, ui }: { p: Presentation; proposal: P
       <div className="container exec-sheet">
         <Head id="t-valor" title={v.title} />
         <div className="exec-box exec-about">
-          <p className="exec-position">{v.intro}</p>
-          <p className="type-body muted">{v.approach}</p>
+          <p className="exec-position">{v.approach}</p>
           <p className="type-body muted">{v.teamwork}</p>
         </div>
         <div className="exec-block">
