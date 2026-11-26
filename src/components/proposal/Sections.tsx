@@ -18,13 +18,18 @@ import {
   Search,
   Settings2,
   Wallet,
+  Globe,
+  Send,
+  Handshake,
+  Images,
   type LucideIcon,
 } from "lucide-react";
 
 const GOAL_ICONS: LucideIcon[] = [BadgeCheck, LayoutGrid, MapPin, CalendarCheck, Wallet, ChartColumn];
 const STEP_ICONS: LucideIcon[] = [Search, PenTool, CodeXml, Rocket];
 const SUPPORT_ICONS: LucideIcon[] = [MessagesSquare, Headphones, RefreshCw];
-import { fmt, formatUsd } from "@/i18n/config";
+const JOURNEY_ICONS: LucideIcon[] = [Globe, Images, Send, Handshake];
+import { fmt, formatUsd, weeksLabel } from "@/i18n/config";
 import type { Ui } from "@/i18n/ui";
 import type { Presentation } from "@/data/proposals/origine-relocation.presentation";
 import type { Proposal } from "@/types/proposal";
@@ -53,12 +58,24 @@ function External({ href, children, ui, className }: { href: string; children: R
 
 /** 00 · Objetivos del proyecto. */
 export function ObjectivesSection({ p }: { p: Presentation }) {
+  const o = p.objectives;
   return (
     <section id="objetivos" className="section exec" aria-labelledby="t-objetivos">
       <div className="container exec-sheet">
-        <Head id="t-objetivos" eyebrow={p.eyebrow} title={p.objectives.title} lead={p.objectives.lead} />
+        <header className="exec-head">
+          <p className="exec-eyebrow">{p.eyebrow}</p>
+          <h2 id="t-objetivos" className="type-h2">
+            {o.title}
+          </h2>
+          {o.intro.map((t, i) => (
+            <p key={t} className={i === 0 ? "type-s1" : "type-s1 muted"}>
+              {t}
+            </p>
+          ))}
+        </header>
+        <h3 className="exec-label">{o.label}</h3>
         <ol className="exec-goals">
-          {p.objectives.items.map((item, i) => (
+          {o.items.map((item, i) => (
             <li key={item}>
               <span className="exec-goals__top" aria-hidden="true">
                 <span className="exec-icon">{(() => { const Icon = GOAL_ICONS[i] ?? BadgeCheck; return <Icon size={20} strokeWidth={1.75} />; })()}</span>
@@ -68,29 +85,48 @@ export function ObjectivesSection({ p }: { p: Presentation }) {
             </li>
           ))}
         </ol>
+        <div className="exec-block exec-journey">
+          <h3 className="exec-label">{o.journeyLabel}</h3>
+          <ol className="exec-journey__list">
+            {o.journey.map((j, i) => {
+              const Icon = JOURNEY_ICONS[i] ?? Globe;
+              return (
+                <li key={j.title}>
+                  <span className="exec-journey__node" aria-hidden="true">
+                    <Icon size={20} strokeWidth={1.75} />
+                  </span>
+                  <p className="exec-label exec-label--sm">{String(i + 1).padStart(2, "0")}</p>
+                  <h4 className="exec-strong">{j.title}</h4>
+                  <p className="type-body muted">{j.text}</p>
+                </li>
+              );
+            })}
+          </ol>
+        </div>
       </div>
     </section>
   );
 }
 
 /** Metodología de trabajo, después de la tabla comparativa. */
-export function MethodSection({ p, supportDays }: { p: Presentation; supportDays: number }) {
+export function MethodSection({ p, proposal, ui }: { p: Presentation; proposal: Proposal; ui: Ui }) {
+  const m = p.method;
+  const L = ui.locale;
+  const supportDays = proposal.plans[0].supportDays;
+  const weeks = Math.max(...Object.values(m.timeline).map((t) => t.build[1]));
+  const cols = Array.from({ length: weeks }, (_, i) => i + 1);
   return (
     <section id="metodologia" className="section exec" aria-labelledby="t-metodologia">
       <div className="container exec-sheet">
-        <header className="exec-head">
-          <h2 id="t-metodologia" className="type-h2">
-            {p.method.label}
-          </h2>
-        </header>
+        <Head id="t-metodologia" title={m.label} />
         <div className="exec-block">
           <ol className="exec-steps exec-steps--timeline">
-            {p.method.steps.map((s, i) => (
-              <li key={s.kicker}>
+            {m.steps.map((s, i) => (
+              <li key={s.title}>
                 <span className="exec-icon exec-icon--lg" aria-hidden="true">
                   {(() => { const Icon = STEP_ICONS[i] ?? Search; return <Icon size={22} strokeWidth={1.75} />; })()}
                 </span>
-                <p className="exec-label exec-label--sm">{s.kicker}</p>
+                <p className="exec-label exec-label--sm">{String(i + 1).padStart(2, "0")}</p>
                 <h3 className="type-h3">{s.title}</h3>
                 <p className="type-body muted">{s.text}</p>
               </li>
@@ -98,9 +134,51 @@ export function MethodSection({ p, supportDays }: { p: Presentation; supportDays
           </ol>
         </div>
         <div className="exec-block">
-          <h3 className="exec-label">{p.method.supportLabel}</h3>
+          <h3 className="exec-label">{m.timelineLabel}</h3>
+          <div className="exec-gantt" style={{ ["--weeks" as string]: weeks } as React.CSSProperties}>
+            <div className="exec-gantt__row exec-gantt__head" aria-hidden="true">
+              <span />
+              <div className="exec-gantt__track">
+                {cols.map((w) => (
+                  <span key={w} className="exec-gantt__week">
+                    {fmt(m.weekShort, w)}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <ul className="exec-gantt__rows">
+              {proposal.plans.map((plan) => {
+                const t = m.timeline[plan.id];
+                return (
+                  <li key={plan.id} className="exec-gantt__row">
+                    <span className="exec-gantt__name">{plan.name}</span>
+                    <div className="exec-gantt__track">
+                      <span className="exec-gantt__bar exec-gantt__bar--design" style={{ gridColumn: `${t.design[0]} / ${t.design[1] + 1}` }}>
+                        <span className="sr-only">
+                          {m.timelineLegend[0]}: {weeksLabel(t.design[0], t.design[1], L)}.
+                        </span>
+                      </span>
+                      <span className="exec-gantt__bar exec-gantt__bar--build" style={{ gridColumn: `${t.build[0]} / ${t.build[1] + 1}` }}>
+                        <span className="sr-only">
+                          {m.timelineLegend[1]}: {weeksLabel(t.build[0], t.build[1], L)}.
+                        </span>
+                      </span>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+            <p className="exec-gantt__legend" aria-hidden="true">
+              <span><i className="exec-gantt__dot exec-gantt__dot--design" /> {m.timelineLegend[0]}</span>
+              <span><i className="exec-gantt__dot exec-gantt__dot--build" /> {m.timelineLegend[1]}</span>
+            </p>
+          </div>
+          <p className="type-caption muted exec-start">{m.timelineNote}</p>
+        </div>
+        <div className="exec-block">
+          <h3 className="exec-label">{m.supportLabel}</h3>
           <ul className="exec-support">
-            {p.method.support.map((item, i) => {
+            {m.support.map((item, i) => {
               const Icon = SUPPORT_ICONS[i] ?? MessagesSquare;
               return (
                 <li key={item.title}>
@@ -113,7 +191,6 @@ export function MethodSection({ p, supportDays }: { p: Presentation; supportDays
               );
             })}
           </ul>
-          <p className="type-caption muted exec-start">{p.method.startNote}</p>
         </div>
       </div>
     </section>
@@ -213,7 +290,6 @@ export function TechSection({ p, proposal, ui }: { p: Presentation; proposal: Pr
             <p className="type-body muted">{t.external}</p>
           </div>
         </div>
-        <p className="type-caption muted exec-start">{t.pluginNote}</p>
       </div>
     </section>
   );
@@ -261,7 +337,7 @@ export function TermsSection({ p, proposal, ui }: { p: Presentation; proposal: P
             <p className="exec-big">
               USD {proposal.maintenance.minUsd}–{proposal.maintenance.maxUsd}
             </p>
-            <p className="type-caption muted">{t.maintenanceText}</p>
+            <p className="type-caption muted">{fmt(t.maintenanceText, proposal.plans[0].supportDays)}</p>
           </div>
         </div>
         <div className="exec-block">
@@ -288,8 +364,10 @@ export function ValueSection({ p, proposal, ui }: { p: Presentation; proposal: P
     <section id="valor" className="section exec" aria-labelledby="t-valor">
       <div className="container exec-sheet">
         <Head id="t-valor" title={v.title} />
-        <div className="exec-box">
-          <p className="exec-position">{v.position}</p>
+        <div className="exec-box exec-about">
+          <p className="exec-position">{v.intro}</p>
+          <p className="type-body muted">{v.approach}</p>
+          <p className="type-body muted">{v.teamwork}</p>
         </div>
         <div className="exec-block">
           <div className="exec-cards">

@@ -51,7 +51,7 @@ export function ProposalPage({ slug, locale }: { slug: string; locale: Locale })
       <main id="contenido">
         <ObjectivesSection p={p} />
         <ProposalsTable p={p} proposal={proposal} ui={ui} />
-        <MethodSection p={p} supportDays={proposal.plans[0].supportDays} />
+        <MethodSection p={p} proposal={proposal} ui={ui} />
         <TechSection p={p} proposal={proposal} ui={ui} />
         <TermsSection p={p} proposal={proposal} ui={ui} />
         <ValueSection p={p} proposal={proposal} ui={ui} />
